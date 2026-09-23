@@ -4,11 +4,17 @@ from pathlib import Path
 
 import click
 from click_default_group import DefaultGroup
+from platformdirs import user_data_dir
 from rich import box
 from rich.console import Console
 from rich.panel import Panel
 
-LOG_FILE_NAME = "log.json"
+data_dir = Path(user_data_dir("wherewasi"))
+data_dir.mkdir(parents=True, exist_ok=True)
+
+DATA_FILE_NAME = "log.json"
+data_file = data_dir / DATA_FILE_NAME
+file_path = Path(data_file)
 
 
 # Entry point for the cli commands
@@ -41,7 +47,7 @@ def launch():
 # return the state of the last note
 def _checkState():
     "Check if previous note exists or not"
-    with open(LOG_FILE_NAME, "r", encoding="utf-8") as file:
+    with open(data_file, "r", encoding="utf-8") as file:
         log_file = json.load(file)
         state = log_file[-1]["state"]
     return state
@@ -51,7 +57,7 @@ def _checkState():
 def _newNote():
     console.print("Start Typing... ", style="dim")
 
-    with open(LOG_FILE_NAME, "r", encoding="utf-8") as file:
+    with open(data_file, "r", encoding="utf-8") as file:
         log_file = json.load(file)
 
         note_id = 1 + int(log_file[-1]["id"])
@@ -68,12 +74,12 @@ def _newNote():
         if new_entry["content"] != "":
             log_file.append(new_entry)
 
-    with open(LOG_FILE_NAME, "w") as file:
+    with open(data_file, "w") as file:
         json.dump(log_file, file, indent=4)
 
 
 def _showNote(n=0):
-    with open(LOG_FILE_NAME, "r", encoding="utf-8") as file:
+    with open(data_file, "r", encoding="utf-8") as file:
         log_file = list(reversed(json.load(file)))
 
     # skip if log file only has the default content or none at all
@@ -99,21 +105,22 @@ def _showNote(n=0):
 # change the state of the most recent note
 def _changeState():
     "changes the state of the most recent note to read"
-    with open(LOG_FILE_NAME, "r", encoding="utf-8") as file:
+    with open(data_file, "r", encoding="utf-8") as file:
         log_file = json.load(file)
 
         log_file[-1]["state"] = "read"
 
-    with open(LOG_FILE_NAME, "w") as file:
+    with open(data_file, "w") as file:
         json.dump(log_file, file, indent=4)
 
 
 # show the most rcent n notes
 def _showLogs(limit=3):
-    with open(LOG_FILE_NAME, "r", encoding="utf-8") as file:
+    with open(data_file, "r", encoding="utf-8") as file:
         log_file = list(reversed(json.load(file)))
 
-    # if the log contains less notes than the limit, then make the limit the number of entries in the log file minus one
+    # if the log contains less notes than the limit, then make the limit the number of
+    # entries in the log file minus one
     if limit > len(log_file) - 1:
         limit = len(log_file) - 1
 
@@ -142,10 +149,7 @@ def _showLogs(limit=3):
 # --------------------
 
 
-def _fileExists(file_name=LOG_FILE_NAME):
-    current_directory = str(Path.cwd())
-    file_path = Path(current_directory + "\\" + file_name)
-
+def _fileExists(file_name=data_file):
     if file_path.exists():
         with open(file_name, "r", encoding="utf-8") as file:
             try:
@@ -166,6 +170,7 @@ def _fileExists(file_name=LOG_FILE_NAME):
     else:
         # if no file at all, create a file
         __createFile(file_name)
+        console.print(f"Created new log file: {file_name}", style="dim")
 
 
 # create a file using the default entry
