@@ -5,6 +5,8 @@ requires-python = ">=3.10"
 authors= [ {"name"="Laween Al-Sulaivany", "email"="laweenhamza@gmail.com"},]
 description = "A tiny CLI tool that remembers where you left off."
 readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
 
 dependencies = [
     "click>=8.5.0",
@@ -14,7 +16,8 @@ dependencies = [
 ]
 
 [project.urls]
-repository = "https://github.com/laween-alsulaivany/wherewasi"
+Homepage = "https://github.com/laween-alsulaivany/wherewasi"
+Repository = "https://github.com/laween-alsulaivany/wherewasi"
 
 [project.scripts]
 wherewasi = "wherewasi.cli:cli"
