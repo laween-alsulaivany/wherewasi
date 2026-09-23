@@ -1,0 +1,8 @@
+*__init__.py
+private
+*.json
+/.venv
+*.md
+*.bk
+__pycache__
+project.egg-info
