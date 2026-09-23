@@ -1,6 +1,14 @@
 [project]
-name = "project"
+name = "wherewasi"
 version = "0.1.0"
+authors= [ {"name"="Laween Al-Sulaivany", "email"="laweenhamza@gmail.com"},]
+description = "A tiny CLI tool that remembers where you left off."
+readme = "README.md"
+
+[project.urls]
+repository = "https://github.com/laween-alsulaivany/wherewasi"
+
+[build-system]
 requires-python = ">=3.14"
 
 
