@@ -6,3 +6,4 @@ private
 *.bk
 __pycache__
 project.egg-info
+/.ruff_cache
