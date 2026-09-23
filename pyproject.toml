@@ -1,0 +1,21 @@
+[project]
+name = "project"
+version = "0.1.0"
+requires-python = ">=3.14"
+
+
+dependencies = [
+    "click>=8.5.0",
+    "rich>=15.0.0",
+    "click-default-group>=1.2.4",
+]
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B"]
+
+
+[project.scripts]
+wherewasi = "main:cli"
